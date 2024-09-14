@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click to Move Button</title>
+    <style>
+        body, html {
+            height: 100vh; /* Ensure it fits the viewport height */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex; 
+            gap: 20px; /* Add space between buttons */
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Stack GIF and buttons vertically */
+        }
+
+        .gif img {
+            max-width: 100%;
+            height: auto;
+            max-height: 200px; /* Adjust max height of the GIF */
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            position: relative; /* Initial position for both buttons */
+        }
+
+        #escape-button {
+            transition: left 0.2s, top 0.2s; /* Smooth movement for the escape button */
+        }
+
+        #message {
+            font-size: 20px;
+            text-align: center;
+            color: rgb(0, 0, 0);
+            margin-top: 10px;
+            display: block; /* Ensure the message is initially visible */
+        }
+
+        #message a {
+            color: red; /* Link color */
+            text-decoration: none; /* Remove underline from link */
+        }
+
+        #message a:hover {
+            text-decoration: underline; /* Add underline on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="gif">
+            <img id="gif" src="img/dog-smile.gif" alt="Meme GIF">
+            <div id="message">Hi lods😅</div>
+        </div>
+        <div>
+            <button id="static-button">Hi!</button>
+            <button id="escape-button">Sino ka?</button>
+        </div>
+    </div>
+
+    <script>
+        const buttonNo = document.getElementById('escape-button');
+        const buttonYes = document.getElementById('static-button');
+        const gif = document.getElementById('gif');
+        const message = document.getElementById('message');
+
+        // GIF order when "No!" is clicked
+        const gifArray = [
+            "img/ok.gif",
+            "img/crying-2.gif", 
+            "img/crying-1.gif"  
+        ];
+
+        // Corresponding messages for each GIF
+        const messages = [
+            "Uy 😢",        
+            "Sorry na kasi 😰", 
+            "Maawa kana 😭"  
+        ];
+
+        let gifIndex = 0; // Keep track of the current GIF for the "No!" button
+
+        buttonNo.addEventListener('click', () => {
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            // Ensure the button moves within the viewport bounds
+            const randomX = Math.random() * (viewportWidth - buttonNo.offsetWidth);
+            const randomY = Math.random() * (viewportHeight - buttonNo.offsetHeight);
+
+            // Move the button to the new random position
+            buttonNo.style.position = 'absolute';
+            buttonNo.style.left = `${randomX}px`;
+            buttonNo.style.top = `${randomY}px`;
+
+            // Cycle through the GIFs for the "No!" button in the specific order
+            if (gifIndex < gifArray.length) {
+                gif.src = gifArray[gifIndex];
+                message.textContent = messages[gifIndex]; // Update the message
+                gifIndex++;
+            }
+
+            // Hide the message after the last GIF is shown
+            if (gifIndex === gifArray.length) {
+                message.style.display = 'block'; // Ensure the final message is visible
+            }
+        });
+
+        buttonYes.addEventListener('click', () => {
+            // Set a smiling GIF when "Yes" is clicked
+            gif.src = "img/shy-blushing.gif";
+
+            // Change the message to a clickable link when "Yes" is clicked
+            message.innerHTML = 'Noice 😳 <a href="flower.html" target="_blank">click mo lods</a>';
+        });
+    </script>
+
+</body>
+</html>
