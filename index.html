@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorry na</title>
+    <title>Hi lods</title>
     <style>
         body, html {
-            height: 100vh; /* Ensure it fits the viewport height */
+            height: 100vh;
             margin: 0;
             display: flex;
             justify-content: center;
@@ -18,27 +18,22 @@
 
         .container {
             display: flex; 
-            gap: 20px; /* Add space between buttons */
+            gap: 20px;
             justify-content: center;
             align-items: center;
-            flex-direction: column; /* Stack GIF and buttons vertically */
+            flex-direction: column;
         }
 
         .gif img {
             max-width: 100%;
             height: auto;
-            max-height: 200px; /* Adjust max height of the GIF */
+            max-height: 200px;
         }
 
         button {
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
-            position: relative; /* Initial position for both buttons */
-        }
-
-        #escape-button {
-            transition: left 0.2s, top 0.2s; /* Smooth movement for the escape button */
         }
 
         #message {
@@ -46,16 +41,7 @@
             text-align: center;
             color: rgb(0, 0, 0);
             margin-top: 10px;
-            display: block; /* Ensure the message is initially visible */
-        }
-
-        #message a {
-            color: red; /* Link color */
-            text-decoration: none; /* Remove underline from link */
-        }
-
-        #message a:hover {
-            text-decoration: underline; /* Add underline on hover */
+            display: block;
         }
     </style>
 </head>
@@ -66,67 +52,88 @@
             <img id="gif" src="img/dog-smile.gif" alt="Meme GIF">
             <div id="message">Hi lods, galit kaba?😅</div>
         </div>
-        <div>
+        <div id="button-container">
             <button id="static-button">Hindi</button>
             <button id="escape-button">Sino ka?</button>
         </div>
     </div>
 
     <script>
-        const buttonNo = document.getElementById('escape-button');
-        const buttonYes = document.getElementById('static-button');
+        const buttonNo = document.getElementById('escape-button'); // "Sino ka?" button
+        const buttonYes = document.getElementById('static-button'); // "Hindi" button
         const gif = document.getElementById('gif');
         const message = document.getElementById('message');
 
-        // GIF order when "No!" is clicked
+        // GIF and message array for "Sino ka?" button clicks
         const gifArray = [
             "img/ok.gif",
             "img/crying-2.gif", 
-            "img/crying-1.gif"  
+            "img/crying-1.gif"
         ];
 
-        // Corresponding messages for each GIF
         const messages = [
             "Uy 😢",        
             "Sorry na kasi 😰", 
-            "Maawa kana 😭"  
+            "Maawa kana 😭"
         ];
 
-        let gifIndex = 0; // Keep track of the current GIF for the "No!" button
+        let gifIndex = 0; // Keep track of the current GIF for the "Sino ka?" button
+        let hindiLabelIndex = 0; // Keep track of the Hindi button label changes
 
+        // Handle "Sino ka?" button click
         buttonNo.addEventListener('click', () => {
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-
-            // Ensure the button moves within the viewport bounds
-            const randomX = Math.random() * (viewportWidth - buttonNo.offsetWidth);
-            const randomY = Math.random() * (viewportHeight - buttonNo.offsetHeight);
-
-            // Move the button to the new random position
-            buttonNo.style.position = 'absolute';
-            buttonNo.style.left = `${randomX}px`;
-            buttonNo.style.top = `${randomY}px`;
-
-            // Cycle through the GIFs for the "No!" button in the specific order
+            // Cycle through the GIFs and messages for the "Sino ka?" button
             if (gifIndex < gifArray.length) {
                 gif.src = gifArray[gifIndex];
                 message.textContent = messages[gifIndex]; // Update the message
                 gifIndex++;
             }
 
-            // Hide the message after the last GIF is shown
-            if (gifIndex === gifArray.length) {
-                message.style.display = 'block'; // Ensure the final message is visible
+            // Move the "Sino ka?" button randomly within the viewport
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            const randomX = Math.random() * (viewportWidth - buttonNo.offsetWidth);
+            const randomY = Math.random() * (viewportHeight - buttonNo.offsetHeight);
+
+            buttonNo.style.position = 'absolute';
+            buttonNo.style.left = `${randomX}px`;
+            buttonNo.style.top = `${randomY}px`;
+
+            // Change the label of the "Hindi" button based on the number of clicks
+            if (hindiLabelIndex === 0) {
+                buttonYes.textContent = "Hala";
+            } else if (hindiLabelIndex === 1) {
+                buttonYes.textContent = "Uy";
+            } else if (hindiLabelIndex === 2) {
+                buttonYes.textContent = "Sorry na";
+            }
+
+            // Increment the index to change the label on the next click
+            hindiLabelIndex++;
+            // Reset to zero if it exceeds the limit to keep cycling through
+            if (hindiLabelIndex > 2) {
+                hindiLabelIndex = 0;
             }
         });
 
+        // Handle "Hindi" button click (to show flower link)
         buttonYes.addEventListener('click', () => {
-            // Set a smiling GIF when "Yes" is clicked
-            gif.src = "img/shy-blushing.gif";
+            // Disable the "Sino ka?" button to prevent further clicks
+            buttonNo.disabled = true;
 
-            // Change the message to a clickable link when "Yes" is clicked
+            // Optionally, style the button to make it appear visually disabled
+            buttonNo.style.opacity = "0.5";
+            buttonNo.style.cursor = "not-allowed";
+
+            // Change the label of the "Hindi" button to "Wala ng Bawian"
+            buttonYes.textContent = "Wala ng bawian 😝";
+
+            // Show the final GIF and link when "Hindi" button is clicked
+            gif.src = "img/shy-blushing.gif";
             message.innerHTML = 'Noice 😳 <a href="flower.html" target="_blank">click mo lods</a>';
         });
+
     </script>
 
 </body>
